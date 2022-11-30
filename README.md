@@ -2,4 +2,4 @@
 
 My home on the web — everything I learned and created: software dev, programming tutorials, career, and open-source.
 
-> 🔗 https://trilm95.vercel.app/
+> 🔗 https://trilm95.com
