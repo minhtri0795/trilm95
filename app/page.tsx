@@ -1,6 +1,10 @@
-// app/page.js
-// This file maps to the index route (/)
 import CommingSoon from "~/components/CommingSoon";
+import Hero from "~/components/Hero";
 export default async function Page() {
-  return <CommingSoon />;
+  return (
+    <>
+      <Hero />
+      <CommingSoon />
+    </>
+  );
 }
