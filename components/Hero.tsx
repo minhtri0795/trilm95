@@ -11,7 +11,7 @@ function Hero() {
           about code and life. I like running, sci-fi, and gaming.
         </p>
       </div>
-      <div className="w-[80px] sm:w-[176px] relative mb-8 sm:mb-0 mr-auto">
+      <div className="w-[80px] sm:w-[176px] relative mb-8 sm:mb-0 mr-auto bg-white rounded-full overflow-hidden">
         <Image src="/ME.png" width={176} height={176} alt="Me" />
       </div>
     </div>
