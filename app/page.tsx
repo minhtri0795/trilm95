@@ -1,6 +1,10 @@
-// app/page.js
-// This file maps to the index route (/)
-import CommingSoon from "~/components/CommingSoon";
+import Hero from "~/components/Hero";
+import FeaturedPosts from "~/components/FeaturedPosts";
 export default async function Page() {
-  return <CommingSoon />;
+  return (
+    <div className="flex flex-col justify-center items-start max-w-2xl lg:max-w-3xl mx-auto pb-16">
+      <Hero />
+      <FeaturedPosts />
+    </div>
+  );
 }

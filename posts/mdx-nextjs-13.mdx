@@ -1,0 +1,52 @@
+---
+title: MDX Blog with Next.js 13 and Contentlayer (Part 1)
+excerpt: A Proof of Concept for an MDX Blog built with Next.js 13
+date: "2022-01-28"
+tags:
+  - next.js
+  - mdx
+  - blog
+  - typescript
+  - react
+  - markdown
+---
+
+[Next.js](https://nextjs.org) version 13 introduced the `/app` directory, a new way of defining routes in your application.  
+In this article, we'll go over the basics of using [Contentlayer](https://www.contentlayer.dev/) to render MDX files with Next.js 13 and TypeScript.  
+The code we'll be writing in this article is available on [GitHub](https://github.com/minhtri0795/lmtri95).
+
+## Context
+
+First, let's quickly go through some technical concepts in case you didn't work with MDX and Next.js a lot:
+
+- [MDX](https://mdxjs.com/) is essentially a set of unified plugins. unified is a generic interface for processing content as structured data. Thanks to this, I was able to write granular plugins to customize how I use MDX quite extensively.
+- [Next.js](https://nextjs.org/blog/next-13) is built on top of Webpack and loads MDX from Contentlayer.
+- [Contentlayer](https://www.contentlayer.dev/) Contentlayer makes working with content easy for developers. It't content SDK to transforms MDX file to JSON data so can consume by Next js app.
+
+# Part 1 : Nextjs
+
+## Setup
+
+First, we'll need to create a new Next.js 13 app:
+
+```bash
+npx create-next-app@latest --experimental-app
+# or
+yarn create next-app --experimental-app
+# or
+pnpm create next-app --experimental-app
+```
+
+## Creating a Blog UI
+
+Create new blog template at: `app/blog/page.tsx`
+
+```tsx:/app/blog/page.tsx
+export default function Post({ params }) {
+  return <h1>My blogs:</h1>;
+}
+```
+
+Now you can access to http://localhost:3000/blog to see you blogs template
+
+continue...

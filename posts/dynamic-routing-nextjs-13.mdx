@@ -1,0 +1,62 @@
+---
+title: Dynamic routing with Nextjs 13
+excerpt: A Proof of Concept for an MDX Blog built with Next.js 13
+date: "2022-12-11"
+tags:
+  - next.js
+  - blog
+---
+
+[Next.js](https://nextjs.org) version 13 introduced the new file-system based router built on top of [React Server Components](https://beta.nextjs.org/docs/rendering/server-and-client-components)
+with support for layouts nested routing and more.
+
+## The app Directory
+
+The new router works in a new directory named app. The app directory works alongside the pages directory to allow for incremental adoption.
+
+In the `app` directory:
+
+- Folders are used to define routes. A route is a single path of nested folders, following the hierarchy from the root folder down to a final leaf folder.
+  Each folder in a route represents a route segment. Each route segment is mapped to a corresponding segment in a URL path.
+- Files are used to create UI that is shown for the route segment. A special `page.js` file is used to make route segments publicly accessible.
+  ![Result {{ w: 700, h: 378, cap: "Defining routes page" }}](/images/post/defining-routes-page.js.webp)
+
+## Dynamic Segments
+
+A Dynamic Segment can be created by wrapping a folder’s name in square brackets: [folderName]. For example, [id] or [slug].
+
+For example, a simple blog could include the following route app/blog/[slug]/page.js where [slug] is the Dynamic Segment for blog posts.
+
+```tsx:/app/[slug]/page.tsx
+export default function Post({ params }) {
+  return <div>My Post</div>;
+}
+```
+
+|           Route            |  Example URL   |       params       |
+| :------------------------: | :------------: | :----------------: |
+| `app/post/[slug]/page.tsx` | `/shop/post-1` | `{ slug: post-1 }` |
+
+## Generate Static Params
+
+The `generateStaticParams` function introduced with next js 13 to replace `getStaticePath` and `getStaticProps` to define the list of route segment parameters that will be statically generated at build time.
+
+```tsx:/app/[slug]/page.tsx
+export default function Post({ params }) {
+  const post = fetch(`https://example-api/post/${params.slug}`)
+  );
+  return <div>{post.title}</div>;
+}
+
+export async function generateStaticParams() {
+  const posts = await getPosts();
+
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+```
+
+The value returned by generateStaticParams is used to generate a list of static segments. Each segment receives the value of the returned object as their params prop.
+
+So with that way you can create dynamyc router for you Nextjs 13 app.
