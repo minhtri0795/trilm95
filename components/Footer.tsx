@@ -20,7 +20,7 @@ const getLabel = (url: string) => {
   if (url.includes("linkedin")) return `LinkedIn @minhtri0795`;
 };
 const Footer = () => (
-  <footer className="text-sm  px-4 pt-10 pb-12 sm:pt-14 sm:pb-16 border-t border-gray-500 lg:px-0 bg-slate-600">
+  <footer className="text-sm  px-4 pt-10 pb-12 sm:pt-14 sm:pb-16 border-t border-gray-200 dark:border-gray-600 lg:px-0 bg-gray-50 dark:bg-slate-800">
     <div className="max-w-xl mx-auto">
       <p className="font-semibold ">About this place</p>
       <p className="mt-2">Welcome to my digital garden 👋🏻</p>
