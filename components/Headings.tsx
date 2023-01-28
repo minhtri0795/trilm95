@@ -1,13 +1,7 @@
-import classNames from "classnames";
-
 const Headings = ({ children }) => <hgroup>{children}</hgroup>;
 
 Headings.H1 = ({ children }) => (
-  <h1
-    className={classNames(
-      "font-extrabold text-3xl text-gray-900 dark:text-gray-100 sm:text-4xl md:text-6xl"
-    )}
-  >
+  <h1 className="font-extrabold text-3xl text-gray-900 dark:text-gray-100 sm:text-4xl md:text-6xl leading-[40px] md:leading-[60px]">
     {children}
   </h1>
 );

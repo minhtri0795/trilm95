@@ -38,6 +38,7 @@ const Footer = () => (
               title={getLabel(url)}
               aria-label={getLabel(url)}
               href={url}
+              target="_blank"
             >
               {renderIcon(url)}
             </a>

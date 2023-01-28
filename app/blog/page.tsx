@@ -15,9 +15,7 @@ function Blog() {
                 {post.title}
               </h4>
               <p className="mt-2 text-sm line-clamp-2 text-gray-500 sm:text-base">
-                A couple of days ago I implemented a feature to allow viewers on
-                my website to easily copy code blocks on my website. Personally,
-                it is quite a useful feature for a technical blog.
+                {post.excerpt}
               </p>
             </a>
           </article>

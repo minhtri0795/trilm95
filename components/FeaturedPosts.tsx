@@ -16,13 +16,12 @@ function FeaturedPosts() {
               <div className="flex flex-col justify-between h-full bg-white dark:bg-gray-900 rounded-lg p-4">
                 <div className="flex flex-col md:flex-row justify-between">
                   <h4 className="text-lg md:text-lg font-medium mb-6 sm:mb-10 w-full text-gray-900 dark:text-gray-100 tracking-tight">
-                    Everything I Know About Style Guides, Design Systems, and
-                    Component Libraries
+                    {post.title}
                   </h4>
                 </div>
                 <div className="flex items-center text-gray-800 dark:text-gray-200 capsize">
                   <FiEye size={"1.3em"} />
-                  <span className="ml-2 align-baseline capsize">176.175</span>
+                  <span className="ml-2 align-baseline capsize">1</span>
                 </div>
               </div>
             </Link>

@@ -1,38 +1,34 @@
-import Head from "next/head";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { format, parseISO } from "date-fns";
 import { allPosts } from "contentlayer/generated";
-
-const PostLayout = ({
-  params,
-  searchParams,
-}: {
-  params: { slug: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) => {
+import { MdxContent } from "components/MdxContent";
+import Published from "~/components/Published";
+import Tags from "~/components/Tags";
+import Headings from "~/components/Headings";
+const PostLayout = ({ params }: { params: { slug: string } }) => {
   const post = allPosts.find(
     ({ url }) => url.replace("/blog/", "") === params.slug
   );
-  console.log(allPosts);
   if (!post) {
     notFound();
   }
 
   return (
     <>
-      <article className="mx-auto max-w-2xl py-16">
-        <div className="mb-6 text-center"></div>
-        <div className="mb-6 text-center">
-          <h1 className="mb-1 text-3xl font-bold">Post 1</h1>
-          {/* <time dateTime={post.date} className="text-sm text-slate-600">
-            {format(parseISO(post.date), "LLLL d, yyyy")}
-          </time> */}
-        </div>
-        <div
-          className="cl-post-body"
-          dangerouslySetInnerHTML={{ __html: post.body.html }}
-        />
+      <article className="mx-auto max-w-2xl w-full pt-10 pb-16 prose prose-sm sm:prose md:prose-md dark:prose-dark">
+        <hgroup className="mb-8 md:mb-10">
+          <Headings.H1>{post.title}</Headings.H1>
+          <Published
+            author={{
+              name: "Minh-Tri Le",
+              avatarURL: "/me.png",
+              url: `https://twitter.com/min_tri95`,
+            }}
+            date={new Date(post.date)}
+          />
+          {post.tags && <Tags className="mt-2 sm:mt-3" tags={post.tags} />}
+        </hgroup>
+
+        <MdxContent code={post.body.code} />
       </article>
     </>
   );
