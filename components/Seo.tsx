@@ -8,12 +8,7 @@ type SEOProps = {
   ogType?: "website" | "article";
 };
 
-export function SEO({
-  title,
-  description,
-  ogImage,
-  ogType = "website",
-}: SEOProps) {
+export function SEO({ title, description, ogType = "website" }: SEOProps) {
   return (
     <>
       <title>{title}</title>
