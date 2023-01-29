@@ -20,7 +20,7 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
           <Published
             author={{
               name: "Minh-Tri Le",
-              avatarURL: "/me.png",
+              avatarURL: "/ME.png",
               url: `https://twitter.com/min_tri95`,
             }}
             date={new Date(post.date)}
