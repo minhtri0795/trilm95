@@ -14,13 +14,13 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
 
   return (
     <>
-      <article className="mx-auto max-w-2xl w-full pt-10 pb-16 prose prose-sm sm:prose md:prose-md dark:prose-dark">
+      <article className="mx-auto max-w-2xl w-full pt-10 pb-16 prose md:prose-md dark:prose-dark">
         <hgroup className="mb-8 md:mb-10">
           <Headings.H1>{post.title}</Headings.H1>
           <Published
             author={{
               name: "Minh-Tri Le",
-              avatarURL: "/me.png",
+              avatarURL: "/ME.png",
               url: `https://twitter.com/min_tri95`,
             }}
             date={new Date(post.date)}

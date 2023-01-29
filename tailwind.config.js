@@ -21,8 +21,18 @@ module.exports = {
       typography: (theme) => ({
         DEFAULT: {
           css: {
+            ".table": { overflowX: "auto" },
+            table: { minWidth: "500px" },
             "blockquote p:first-of-type::before": false,
             "blockquote p:last-of-type::after": false,
+            code: {
+              backgroundColor: "#30363d",
+              borderRadius: "3px",
+              paddingBlock: ".4125ex",
+              paddingInline: ".825ex",
+            },
+            "code::before": false,
+            "code::after": false,
             "h1:first-of-type": {
               color: theme("colors.gray.900"),
               fontSize: theme("fontSize.3xl[0]"),

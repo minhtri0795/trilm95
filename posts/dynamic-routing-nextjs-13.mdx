@@ -10,6 +10,8 @@ tags:
 [Next.js](https://nextjs.org) version 13 introduced the new file-system based router built on top of [React Server Components](https://beta.nextjs.org/docs/rendering/server-and-client-components)
 with support for layouts nested routing and more.
 
+Currently, we will have a slight difference in defining a dynamic router for a Next.js app. Firstly, we need to look at something new from Next.js 13.
+
 ## The app Directory
 
 The new router works in a new directory named app. The app directory works alongside the pages directory to allow for incremental adoption.
@@ -23,7 +25,7 @@ In the `app` directory:
 
 ## Dynamic Segments
 
-A Dynamic Segment can be created by wrapping a folder’s name in square brackets: [folderName]. For example, [id] or [slug].
+A Dynamic Segment can be created by wrapping a folder’s name in square brackets: [folderName].
 
 For example, a simple blog could include the following route app/blog/[slug]/page.js where [slug] is the Dynamic Segment for blog posts.
 
@@ -33,9 +35,13 @@ export default function Post({ params }) {
 }
 ```
 
+<div class="table">
+
 |           Route            |  Example URL   |       params       |
 | :------------------------: | :------------: | :----------------: |
-| `app/post/[slug]/page.tsx` | `/shop/post-1` | `{ slug: post-1 }` |
+| `app/post/[slug]/page.tsx` | `/post/post-1` | `{ slug: post-1 }` |
+
+</div>
 
 ## Generate Static Params
 
@@ -59,4 +65,4 @@ export async function generateStaticParams() {
 
 The value returned by generateStaticParams is used to generate a list of static segments. Each segment receives the value of the returned object as their params prop.
 
-So with that way you can create dynamyc router for you Nextjs 13 app.
+With this method, you can create a dynamic router for your Next.js 13 app.

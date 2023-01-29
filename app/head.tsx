@@ -1,9 +1,9 @@
-import DefaultTags from "./DefaultTags";
-export default function Head({ params }: { params: { slug: string } }) {
+import { SEO } from "~/components/Seo";
+export default function Head() {
   return (
-    <>
-      <title>Home</title>
-      <DefaultTags />
-    </>
+    <SEO
+      title="Minh-Tri Le - Web Developer"
+      description="Welcome to my digital garden"
+    />
   );
 }

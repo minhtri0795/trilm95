@@ -6,9 +6,7 @@ type CodeBlockProps = {
 };
 
 export function CodeBlock({ children }: CodeBlockProps) {
-  const [showCopy, setShowCopy] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-
   const copy = async () => {
     await navigator.clipboard.writeText(
       extractText(children as React.ReactElement)
@@ -19,30 +17,23 @@ export function CodeBlock({ children }: CodeBlockProps) {
   };
 
   return (
-    <pre
-      className="relative mx-auto max-w-3xl"
-      onMouseEnter={() => setShowCopy(true)}
-      onMouseLeave={() => setShowCopy(false)}
-      onFocus={() => setShowCopy(true)}
-      onBlur={() => setShowCopy(false)}
-    >
-      {showCopy && (
-        <button
-          className="absolute top-2 right-2 flex h-7 w-7 items-center justify-center rounded bg-white dark:bg-[#22272E]"
-          onClick={copy}
-          disabled={isCopied}
-        >
-          {isCopied ? (
-            <MdDone className="fill-current" size="1.2em" aria-label="Copied" />
-          ) : (
-            <MdContentCopy
-              className="fill-current"
-              size="1.2em"
-              aria-label="Copy code"
-            />
-          )}
-        </button>
-      )}
+    <pre className="relative mx-auto max-w-3xl">
+      <button
+        className="absolute top-2 right-2 flex h-7 w-7 items-center justify-center rounded bg-white dark:bg-[#22272E]"
+        onClick={copy}
+        disabled={isCopied}
+      >
+        {isCopied ? (
+          <MdDone className="fill-current" size="1.2em" aria-label="Copied" />
+        ) : (
+          <MdContentCopy
+            className="fill-current"
+            size="1.2em"
+            aria-label="Copy code"
+          />
+        )}
+      </button>
+
       {children}
     </pre>
   );

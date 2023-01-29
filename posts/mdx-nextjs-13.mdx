@@ -37,16 +37,55 @@ yarn create next-app --experimental-app
 pnpm create next-app --experimental-app
 ```
 
+## Creating a Layout
+
+Create new layout for all pages at: `app/layout.tsx`
+
+```tsx:/app/layout.tsx
+import Header from "~/components/Header";
+import Footer from "~/components/Footer";
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body className={InterFont.className}>
+          <Header />
+          <main className="main">
+            {children}
+          </main>
+          <Footer />
+      </body>
+    </html>
+  );
+}
+```
+
 ## Creating a Blog UI
 
 Create new blog template at: `app/blog/page.tsx`
 
 ```tsx:/app/blog/page.tsx
-export default function Post({ params }) {
+export default function Blog({ params }) {
   return <h1>My blogs:</h1>;
 }
 ```
 
 Now you can access to http://localhost:3000/blog to see you blogs template
+
+## Creating a Post UI
+
+Create new blog template at: `app/blog/[slug]/page.tsx`
+
+```tsx:/app/blog/[slug]/page.tsx
+export default function Post({ params }) {
+  return <h1>{params.slug}</h1>;
+}
+```
+
+Now you can access to post with any slug and this slug sent to params props and render on dynamic title.
+Example: http://localhost:3000/blog/post-1
 
 continue...
