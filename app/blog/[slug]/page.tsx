@@ -14,7 +14,7 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
 
   return (
     <>
-      <article className="mx-auto max-w-2xl w-full pt-10 pb-16 prose prose-sm sm:prose md:prose-md dark:prose-dark">
+      <article className="mx-auto max-w-2xl w-full pt-10 pb-16 prose md:prose-md dark:prose-dark">
         <hgroup className="mb-8 md:mb-10">
           <Headings.H1>{post.title}</Headings.H1>
           <Published

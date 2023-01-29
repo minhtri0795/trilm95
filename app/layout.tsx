@@ -14,7 +14,7 @@ export default function RootLayout({
       <body className={InterFont.className}>
         <Providers>
           <Header />
-          <main className="flex flex-col justify-center px-8 min-h-[50vh]">
+          <main className="flex flex-col justify-center px-8 min-h-[50vh] overflow-x-hidden">
             {children}
           </main>
           <Footer />
