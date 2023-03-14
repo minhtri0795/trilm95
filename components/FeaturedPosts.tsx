@@ -19,10 +19,6 @@ function FeaturedPosts() {
                     {post.title}
                   </h4>
                 </div>
-                <div className="flex items-center text-gray-800 dark:text-gray-200 capsize">
-                  <FiEye size={"1.3em"} />
-                  <span className="ml-2 align-baseline capsize">1</span>
-                </div>
               </div>
             </Link>
           );
