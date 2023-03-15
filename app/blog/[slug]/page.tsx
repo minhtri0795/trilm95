@@ -4,6 +4,7 @@ import { MdxContent } from "components/MdxContent";
 import Published from "~/components/Published";
 import Tags from "~/components/Tags";
 import Headings from "~/components/Headings";
+import type { Metadata } from "next";
 const PostLayout = ({ params }: { params: { slug: string } }) => {
   const post = allPosts.find(
     ({ url }) => url.replace("/blog/", "") === params.slug
@@ -11,7 +12,6 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
   if (!post) {
     notFound();
   }
-
   return (
     <>
       <article className="mx-auto max-w-2xl w-full pt-10 pb-16 prose md:prose-md dark:prose-dark">
@@ -38,5 +38,15 @@ export async function generateStaticParams() {
   return allPosts.map((post) => ({
     slug: post.url,
   }));
+}
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const post = allPosts.find(
+    ({ url }) => url.replace("/blog/", "") === params.slug
+  );
+  return {
+    title: post.title,
+    description: post.excerpt,
+    openGraph: { type: "article" },
+  };
 }
 export default PostLayout;
