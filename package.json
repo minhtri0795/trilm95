@@ -16,7 +16,7 @@
     "clsx": "^1.2.1",
     "contentlayer": "^0.3.0",
     "date-fns": "^2.29.3",
-    "next": "^13.1.6-canary.1",
+    "next": "^13.2.4",
     "next-contentlayer": "^0.3.0",
     "next-sitemap": "^3.1.48",
     "next-themes": "^0.2.1",
