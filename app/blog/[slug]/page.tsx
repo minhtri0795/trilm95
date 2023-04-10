@@ -43,9 +43,10 @@ export async function generateMetadata({ params }): Promise<Metadata> {
   const post = allPosts.find(
     ({ url }) => url.replace("/blog/", "") === params.slug
   );
+  if (!post) return {}
   return {
-    title: post.title,
-    description: post.excerpt,
+    title: post.title || "",
+    description: post.excerpt || "",
     openGraph: { type: "article" },
   };
 }
