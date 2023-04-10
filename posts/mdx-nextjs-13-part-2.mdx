@@ -1,0 +1,170 @@
+---
+title: MDX Blog with Next.js 13 and Contentlayer (Part 2)
+excerpt: A Proof of Concept for an MDX Blog built with Next.js 13
+date: "2023-01-25"
+tags:
+  - next.js
+  - mdx
+  - blog
+  - typescript
+  - react
+  - markdown
+---
+
+If you not follow **Part 1** to seting up project, you can check [here](/blog/mdx-nextjs-13).
+
+# Part 2: Setup Contentlayer SDK configurations
+
+## Install Contentlayer
+
+```bash
+yarn add contentlayer next-contentlayer
+```
+
+To hook Contentlayer into the next dev and next build processes, 
+you'll want to wrap the Next.js configuration using the withContentlayer method. <br/>
+Create a new file called next.config.mjs in the root of your project, and add the following content.
+
+```js:/next.config.mjs
+import { withContentlayer } from 'next-contentlayer';
+export default withContentlayer({
+  experimental: {
+    appDir: true,
+  },
+});
+```
+
+Then add the following lines to your tsconfig.json or jsconfig.json file:
+
+```json:/tsconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "contentlayer/generated": ["./.contentlayer/generated"],
+      "~/*": ["./*"]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    ".next/types/**/*.ts",
+    ".contentlayer/generated",
+    "next.config.mjs"
+  ]
+}
+```
+
+We defined the baseUrl in the code above to simplify file imports. 
+Then we specified the path where Contentlayer generates files after processing: the `.contentlayer/generated` directory. 
+This creates an alias of `contentlayer/generated` to the generated files directory.
+
+## Define Post Schema
+Create a new file called contentlayer.config.js and add the following below.
+
+```js:/contentlayer.config.js
+import { defineDocumentType, makeSource } from "contentlayer/source-files";
+export const Post = defineDocumentType(() => ({
+  name: "Post",
+  filePathPattern: `**/*.mdx`,
+  contentType: "mdx",
+  fields: {
+    title: {
+      type: "string",
+      description: "The title of the post",
+      required: true,
+    },
+    date: {
+      type: "date",
+      description: "The date of the post",
+      required: true,
+    },
+    excerpt: {
+      type: "string",
+      description: "Short summary of the post",
+      required: true,
+    },
+    tags: {
+      type: "list",
+      of: { type: "string" },
+      description: "Tags for the post",
+      required: true,
+    },
+  },
+  computedFields: {
+    url: {
+      type: "string",
+      resolve: (post) => `/blog/${post._raw.flattenedPath}`,
+    },
+  },
+}));
+
+export default makeSource({
+  contentDirPath: "posts",
+  documentTypes: [Post],
+});
+```
+
+These documents are expected to be `.mdx` files that live within a `posts` directory in your project. 
+And data objects generated from these files will have the following properties:
+
+- `title`: String pulled from the file's frontmatter.
+- `date`: JavaScript Date object, pulled from the file's frontmatter.
+- `excerpt`: Short summary of the article.
+- `tag`: Define tags for article 
+- `body`: An object that contains the raw content from the markdown file and the converted html string. (This is built into Contentlayer by default and does not have to be defined.)
+- `url`: A string that takes the name of the file and prepends /blog/ to it, thus defining that path at which that content will be available on your site. 
+
+### Adding new blog articles in MDX
+
+Create a `posts` folder where the content (MDX) files will reside. Then add the MDX files. 
+Here is an example of an article at `/posts/first-post.mdx`.
+
+```md:
+posts/
+├── first-post.mdx
+├── second-post.mdx
+└── third-post.mdx
+```
+
+```md:/posts/first-post.mdx
+---
+title: Lorem Ipsum
+excerpt: Lorem Ipsum gose here
+date: 2023-03-24
+tags:
+  - next.js
+  - mdx
+  - blog
+  - typescript
+  - react
+  - markdown
+---
+
+
+Ullamco et nostrud magna commodo nostrud occaecat quis pariatur id ipsum. Ipsum
+consequat enim id excepteur consequat nostrud esse esse fugiat dolore.
+Reprehenderit occaecat exercitation non cupidatat in eiusmod laborum ex eu
+fugiat aute culpa pariatur. Irure elit proident consequat veniam minim ipsum ex
+pariatur.
+
+Mollit nisi cillum exercitation minim officia velit laborum non Lorem
+adipisicing dolore. Labore commodo consectetur commodo velit adipisicing irure
+dolore dolor reprehenderit aliquip. Reprehenderit cillum mollit eiusmod
+excepteur elit ipsum aute pariatur in. Cupidatat ex culpa velit culpa ad non
+labore exercitation irure laborum.
+
+```
+
+### Date Formatting Helper
+
+Before we get into the pages, add a library to help us with formatting the date.
+
+```bash
+yanr add date-fns
+```
+
+Now we can tie it all together by bringing the data into our pages. 
+Our next step will be to construct the web page where we will display our blog. [Part 3](/blog/mdx-nextjs-13-part-3) 

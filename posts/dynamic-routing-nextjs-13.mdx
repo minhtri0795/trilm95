@@ -1,10 +1,11 @@
 ---
 title: Dynamic routing with Nextjs 13
-excerpt: A Proof of Concept for an MDX Blog built with Next.js 13
+excerpt: Dynamic Routes are pages that allow you to add custom params to your URLs. Start creating Dynamic Routes and learn more here.
 date: "2022-12-11"
 tags:
   - next.js
   - blog
+featuredPost: true
 ---
 
 [Next.js](https://nextjs.org) version 13 introduced the new file-system based router built on top of [React Server Components](https://beta.nextjs.org/docs/rendering/server-and-client-components)
@@ -35,7 +36,7 @@ export default function Post({ params }) {
 }
 ```
 
-<div class="table">
+<div className="table">
 
 |           Route            |  Example URL   |       params       |
 | :------------------------: | :------------: | :----------------: |
@@ -50,7 +51,6 @@ The `generateStaticParams` function introduced with next js 13 to replace `getSt
 ```tsx:/app/[slug]/page.tsx
 export default function Post({ params }) {
   const post = fetch(`https://example-api/post/${params.slug}`)
-  );
   return <div>{post.title}</div>;
 }
 

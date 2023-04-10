@@ -9,6 +9,7 @@ tags:
   - typescript
   - react
   - markdown
+featuredPost: true
 ---
 
 [Next.js](https://nextjs.org) version 13 introduced the `/app` directory, a new way of defining routes in your application.  
@@ -23,9 +24,9 @@ First, let's quickly go through some technical concepts in case you didn't work 
 - [Next.js](https://nextjs.org/blog/next-13) is built on top of Webpack and loads MDX from Contentlayer.
 - [Contentlayer](https://www.contentlayer.dev/) Contentlayer makes working with content easy for developers. It't content SDK to transforms MDX file to JSON data so can consume by Next js app.
 
-# Part 1 : Nextjs
+# Part 1 : Setup project
 
-## Setup
+## Next js app
 
 First, we'll need to create a new Next.js 13 app:
 
@@ -37,55 +38,59 @@ yarn create next-app --experimental-app
 pnpm create next-app --experimental-app
 ```
 
-## Creating a Layout
+We will test to make sure the app is working. We will use yarn for this tutorial. 
+However, if you like, you may just easily use NPM. Run the code below:
+```bash
+yarn dev
+```
+You should see our app available on http://localhost:3000.
 
-Create new layout for all pages at: `app/layout.tsx`
+ ![Result {{ w: 700, h: 378, cap: "" }}](/images/post/next-13-app.png)
 
-```tsx:/app/layout.tsx
-import Header from "~/components/Header";
-import Footer from "~/components/Footer";
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en">
-      <body className={InterFont.className}>
-          <Header />
-          <main className="main">
-            {children}
-          </main>
-          <Footer />
-      </body>
-    </html>
-  );
+## Add Tailwind
+We will use Tailwind CSS for styling as we go without much extra effort, let’s quickly set up Tailwind for our project.
+Run the command below to install Tailwind:
+
+```bash 
+yarn add -D tailwindcss postcss autoprefixer
+```
+
+After the installation is complete, run the init command below to generate both `tailwind.config.js` and `postcss.config.js`.
+
+Now within your tailwind.config.js file, add the following:
+
+```js:/tailwind.config.js
+module.exports = {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
 }
 ```
 
-## Creating a Blog UI
+Add TailwindCSS styling to `global.css`
 
-Create new blog template at: `app/blog/page.tsx`
-
-```tsx:/app/blog/page.tsx
-export default function Blog({ params }) {
-  return <h1>My blogs:</h1>;
-}
+```css:/styles/global.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 ```
 
-Now you can access to http://localhost:3000/blog to see you blogs template
+Lastly, we need to install `@tailwindcss/typography` to enable Tailwind styles to be applied to our Markdown(MDX) files.
 
-## Creating a Post UI
+```bash
+yarn add @tailwindcss/typography
+```
+We then need to add it as a plugin to our Tailwind configurations. Go to tailwind.config.js and add the code below.
 
-Create new blog template at: `app/blog/[slug]/page.tsx`
-
-```tsx:/app/blog/[slug]/page.tsx
-export default function Post({ params }) {
-  return <h1>{params.slug}</h1>;
-}
+```bash
+plugins: [
+    require('@tailwindcss/typography'),
+],
 ```
 
-Now you can access to post with any slug and this slug sent to params props and render on dynamic title.
-Example: http://localhost:3000/blog/post-1
-
-continue...
+Now let’s move on to set up Contentlayer [Part 2](/blog/mdx-nextjs-13-part-2).

@@ -26,6 +26,11 @@ export const Post = defineDocumentType(() => ({
       description: "Tags for the post",
       required: true,
     },
+    featuredPost:{
+      type: "boolean",
+      default: false,
+      required: true,
+    }
   },
   computedFields: {
     url: {
