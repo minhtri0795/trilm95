@@ -1,16 +1,21 @@
 "use client";
+import { useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { BsCircle } from "react-icons/bs";
 import { useTheme } from "next-themes";
 import classNames from "classnames";
+
 const navigation = [
   { href: "/", name: "Home" },
   { href: "/blog", name: "Blog" },
   { href: "/cheatsheets", name: "Cheatsheets" },
+  { href: "/about", name: "About" },
 ];
 const Header = () => {
+  const pathname = usePathname();
   const [isMounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   const { theme, setTheme } = useTheme();
@@ -23,9 +28,9 @@ const Header = () => {
           <Link
             key={href}
             href={href}
-            className={classNames(" text-gray-900 dark:text-gray-100", {
-              "ml-4 md:ml-8": index > 0,
-            })}
+            className={classNames(" text-gray-900 dark:text-gray-100 px-2 py-1", {
+              "ml-2 md:ml-4": index > 0
+            },{"bg-neutral-100 dark:bg-neutral-800 rounded-md z-[-1]": href===pathname })}
           >
             {name}
           </Link>
