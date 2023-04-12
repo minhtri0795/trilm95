@@ -33,6 +33,6 @@
     "**/*.jsx",
     ".next/types/**/*.ts",
     ".contentlayer/generated",
-    "next.config.mjs"
+    "next.config.js"
   ]
 }
