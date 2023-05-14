@@ -30,7 +30,12 @@ export const Post = defineDocumentType(() => ({
       type: "boolean",
       default: false,
       required: true,
-    }
+    },
+    featuredImage: {
+      type: "string",
+      description: "Featured image",
+      required: false,
+    },
   },
   computedFields: {
     url: {
