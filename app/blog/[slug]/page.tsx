@@ -43,11 +43,22 @@ export async function generateMetadata({ params }): Promise<Metadata> {
   const post = allPosts.find(
     ({ url }) => url.replace("/blog/", "") === params.slug
   );
-  if (!post) return {}
+  if (!post) return {};
   return {
     title: post.title || "",
     description: post.excerpt || "",
-    openGraph: { type: "article" },
+    openGraph: {
+      title: post.title || "",
+      description: post.excerpt || "",
+      type: "article",
+      images: [
+        {
+          url: post.featuredImage ? `https://trilm95.com${post.featuredImage}` : "https://trilm95.com/og-image.png",
+          width: 1200,
+          height: 627,
+        },
+      ],
+    },
   };
 }
 export default PostLayout;
