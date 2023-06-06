@@ -11,7 +11,6 @@ import classNames from "classnames";
 const navigation = [
   { href: "/", name: "Home" },
   { href: "/blog", name: "Blog" },
-  { href: "/cheatsheets", name: "Cheatsheets" },
   { href: "/about", name: "About" },
 ];
 const Header = () => {

@@ -1,0 +1,181 @@
+---
+title: How do we maintain the same code formatting across our team in the web department?
+excerpt: Improve your developer experience by linting and formatting your code through git hooks.
+date: "2023-06-06"
+tags:
+  - prettier
+  - eslint
+  - husky
+  - pre-commit
+  - nextjs
+---
+
+**This situation has probably happened to you… You pulled code from the repository, made a change, saved the file, and when you looked at the diff, you were horrified to see how the whole file lit up green, when you only changed one line. You can find yourself in the same situation when you did a code review for another developer, who ignored such a wild diff and pushed the change.**
+
+An easy way to keep your code clean and readable is to ensure as many of your project’s coding principles are followed. I do this with my projects, by setting up the Husky pre-commit hook with ESLint, Prettier, and Lint-staged in Next js app.
+
+## Tools of the Trade
+
+To create such a useful environment, we'll use these packages to check our code through git hooks:
+
+- Husky 🐶: Supercharges our develop experience by linting, testing, or formatting code as code is committed with git.
+- ESLint ✔️: Checks for certain code patterns to stop errors or potential bugs.
+- Lint-Staged 🔧: Lints code before a commit occurs to keep production code clean.
+- Prettier ✨: Keeps code formatting consistent based on our own preferences.
+
+## ESLint is already set up
+
+Since Next.js version 11, it comes with ESLint integration out-of-the-box. This means that Next.js installs devDependencies like `eslint` and `eslint-config-next` and creates an `eslintrc.json` file. Next.js uses the `next lint` command to catch ESLint errors.
+
+You can check if in `package.json` already have it.
+
+### Setting up Prettier
+
+ESLint rules in Next.js already come with some code formatting rules. To override them and initiate your personal prettier config, start by installing the following devDependencies:
+
+```bash
+yarn add --dev prettier eslint-plugin-prettier eslint-config-prettier
+```
+
+To do Prettier work with ESLint, add "prettier" to the extends and the plugins array in the `.eslintrc.json` file.
+
+```json
+{
+  "extends": ["next/core-web-vitals", "prettier"],
+  "plugins": ["prettier"]
+}
+```
+In the extends array, make sure prettier is the last item so that when you define your Prettier configuration that takes precedence over other configurations that may have their way of formatting code.
+
+You can also define the rules in this file. For example, whenever there is a code formatting issue with any of the files in my Next.js app, I like it to be exposed as a warning rather than an error.
+
+```json
+{
+  "extends": ["next/core-web-vitals", "prettier"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": "warn",
+    "no-console": "warn"
+  }
+}
+```
+
+Create a new file .prettierrc and add a custom Prettier configuration:
+
+```json
+{
+    "endOfLine": "lf",
+    "trailingComma": "es5",
+    "tabWidth": 4,
+    "semi": true,
+    "singleQuote": false,
+    "bracketSpacing": false,
+    "bracketSameLine": true
+}
+```
+
+Also, add a .prettierignore file to ignore formatting on certain directories and files:
+
+```bash
+.next
+.cache
+package-lock.json
+public
+node_modules
+next-env.d.ts
+next.config.ts
+yarn.lock
+```
+
+### Installing Husky
+
+To set it up, initially, install the package as a dev dependency:
+
+```bash
+yarn add --dev husky
+```
+
+**Monorepo**
+
+In my project I setup monorepo with `frontend` and `backend` as sub directory and only want Husky run at `frontend` directory.
+
+So `package.json` file and `.git` directory are not at the same level. For example, `root/.git` and `root/frontend/package.json`.
+
+```bash
+├── root
+│   ├── frontend
+│   │    ├── package.json
+│   └── backend
+└── .git
+```
+
+By design, `husky install` must be run in the same directory as `.git`, but you can change directory during `prepare` script and pass a subdirectory:
+
+```json:/frontend/package.json
+{
+  "scripts": {
+    "prepare": "cd .. && husky install frontend/.husky"
+  }
+}
+```
+Then install Husky - Git hook with: 
+
+```bash
+cd frontend && yarn run prepare
+```
+
+In your hooks, you'll also need to change directory:
+
+```bash:frontend/.husky/pre-commit
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+cd frontend
+```
+That all for now, in the next we will come back to configure Husky's pre-commit hook after setting up lint-staged.
+
+#### Setting up Lint Staged
+
+The `lint-staged` package allows linting staged git files. It also checks for the changed files instead of the whole source code.
+
+Create a `.lintstagedrc.js` file at the root of the Next.js app and add the following snippet:
+
+```js:frontend/.lintstagedrc.js
+module.exports = {
+    // Type check TypeScript files
+    "**/*.(ts|tsx)": () => "yarn tsc --noEmit",
+
+    // Lint & Prettify TS and JS files
+    "**/*.(ts|tsx|js)": (filenames) => [
+        `yarn eslint ${filenames.join(" ")}`,
+        `yarn prettier --write ${filenames.join(" ")}`,
+    ],
+
+    // Prettify only Markdown and JSON files
+    "**/*.(md|json)": (filenames) =>
+        `yarn prettier --write ${filenames.join(" ")}`,
+};
+
+```
+After setting up the lint-staged configuration, open the `/.husky/pre-commit` file and add the following pre-commit hook:
+
+```bash:frontend/.husky/pre-commit
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+cd frontend
+# Add the following
+yarn lint-staged
+# If using npm, remove above and uncomment below
+# npm run lint-staged
+```
+
+### Testing Our Setup
+
+Now that we've installed and configured our tools, let's test this out in action!
+
+I have modified the `/pages/_app.tsx` file and removed the reference of AppProps. This will return a type error when committing this file:
+
+![Result {{ w: 700, h: 378, cap: "" }}](/images/post/eslint-pre-commit.png)
+
+### Conclusion
+
+That's all for setting up ESLint, Prettier, Husky, and Lint Staged with a minimal configuration. You can expand the configuration for any tools as per your needs or modify the pre-commit hook.
