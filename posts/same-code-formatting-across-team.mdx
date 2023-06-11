@@ -29,7 +29,7 @@ Since Next.js version 11, it comes with ESLint integration out-of-the-box. This 
 
 You can check if in `package.json` already have it.
 
-### Setting up Prettier
+## Setting up Prettier
 
 ESLint rules in Next.js already come with some code formatting rules. To override them and initiate your personal prettier config, start by installing the following devDependencies:
 
@@ -87,7 +87,7 @@ next.config.ts
 yarn.lock
 ```
 
-### Installing Husky
+## Installing Husky
 
 To set it up, initially, install the package as a dev dependency:
 
@@ -133,7 +133,7 @@ cd frontend
 ```
 That all for now, in the next we will come back to configure Husky's pre-commit hook after setting up lint-staged.
 
-#### Setting up Lint Staged
+## Setting up Lint Staged
 
 The `lint-staged` package allows linting staged git files. It also checks for the changed files instead of the whole source code.
 
@@ -168,7 +168,7 @@ yarn lint-staged
 # npm run lint-staged
 ```
 
-### Testing Our Setup
+## Testing Our Setup
 
 Now that we've installed and configured our tools, let's test this out in action!
 
@@ -176,6 +176,6 @@ I have modified the `/pages/_app.tsx` file and removed the reference of AppProps
 
 ![Result {{ w: 700, h: 378, cap: "" }}](/images/post/eslint-pre-commit.png)
 
-### Conclusion
+## Conclusion
 
 That's all for setting up ESLint, Prettier, Husky, and Lint Staged with a minimal configuration. You can expand the configuration for any tools as per your needs or modify the pre-commit hook.
