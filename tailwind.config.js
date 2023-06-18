@@ -26,7 +26,7 @@ module.exports = {
             "blockquote p:first-of-type::before": false,
             "blockquote p:last-of-type::after": false,
             code: {
-              backgroundColor: "#30363d",
+              backgroundColor: "#f1f5f9",
               borderRadius: "3px",
               paddingBlock: ".4125ex",
               paddingInline: ".825ex",
@@ -108,6 +108,9 @@ module.exports = {
             pre: {
               backgroundColor: theme("colors.gray.900"),
               borderColor: theme("colors.gray.700"),
+            },
+            code:{
+              backgroundColor: "#30363d",
             },
             "pre > code": {
               color: theme("colors.gray.200"),

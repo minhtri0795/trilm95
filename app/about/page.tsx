@@ -6,15 +6,14 @@ export default async function Page() {
       <p className="mt-5 lg:mt-12 text-[16px] leading-7">
         My name is Minh Tri. I’m currently working as a Development Team Lead at
         Saigon Digital where I’m collaborate with other software developers,
-        marketing analysts and directors to plan, design, develop, test, and
+        marketing analysts and directors to plan, design, develop and
         maintain website for our enterprise clients worldwide.
       </p>
       <p className="text-[16px] leading-7 my-4">
         I am passionate about developing beautiful, engaging, and
         high-performance web applications using the latest cloud and web
-        technologies. I am especially interested in Jamstack and modern web tools. 
-        It's important to me that other developers have a positive
-        experience using these tools, so I like to work with Next.js, Gatsby.js,
+        technologies. I am especially interested in Jamstack and modern web tools,
+        so I like to work with Next.js, Gatsby.js,
         TypeScript, Tailwind CSS, Vercel, Strapi, Contentful, and Storybook.
       </p>
       <p className="text-[16px] leading-7 my-4">

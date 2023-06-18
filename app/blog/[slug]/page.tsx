@@ -4,6 +4,7 @@ import { MdxContent } from "components/MdxContent";
 import Published from "~/components/Published";
 import Tags from "~/components/Tags";
 import Headings from "~/components/Headings";
+import CommentBox from "~/components/CommentBox";
 import type { Metadata } from "next";
 const PostLayout = ({ params }: { params: { slug: string } }) => {
   const post = allPosts.find(
@@ -30,6 +31,7 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
 
         <MdxContent code={post.body.code} />
       </article>
+      <CommentBox/>
     </>
   );
 };
