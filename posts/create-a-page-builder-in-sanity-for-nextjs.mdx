@@ -1,5 +1,5 @@
 ---
-title: Create a Page Builder in Sanity for Next js
+title: Create a Page Builder in Sanity for Next js 13 (App dir)
 excerpt: Setting up the most popular content editing pattern for the component-based nature of front end frameworks and modern website design.
 date: "2023-05-14"
 tags:
@@ -16,11 +16,15 @@ I've been using Sanity recently and its highly customisable setup lends itself n
 
 ## Example Repo
 
-Since this guide is a whole load of code snippets, I've prepared a complete working repo for a [Page Builder in Sanity and Nextjs](https://github.com/minhtri0795/nextjs-sanity).
+Since this guide is a whole load of code snippets, I've prepared a complete working repo for a [Page Builder in Sanity and Nextjs](https://github.com/minhtri0795/nextjs-sanity). 
 
 It is not intended to be a fully complete website starter, just a working demo of specifically what we're looking at in this article.
 
 Firstly, please read through [readme](https://github.com/minhtri0795/nextjs-sanity/blob/main/README.md) guide to clone and run project on your local.
+
+## Next js 13 support
+
+Recently I decided migration my work to Next js 13 and support for `app` dir, can check my work here: [migration to Next js 13](https://github.com/minhtri0795/nextjs-sanity/tree/migration-app-dir)
 
 ## Setup Sanity
 
@@ -306,12 +310,26 @@ You can import this client where you want to fetch some content from your Sanity
 Finally we need little modify home template to render the dynamic block as well.
 
 #### Home page:
-```tsx:/pages/index.tsx
+```tsx:/app/page.tsx
 import IntroTemplate from 'intro-template'
 import PageBuilder from 'components/PageBuilder'
+import { getPageBySlugs } from '../lib/api'
+import { notFound } from 'next/navigation'
 
-export default function IndexPage({ page }) {
+async function getPageData() {
+  const res = await getPageBySlugs('home')
+  const data = await res
+  return data
+}
+
+export default async function IndexPage() {
+
+  const page = await getPageData()
+  if (!page) {
+    notFound()
+  }
   let blocks = page?.pageBuilder
+
   return (
     <>
       {/* Start something new 💖 */}
@@ -328,23 +346,24 @@ export default function IndexPage({ page }) {
   )
 }
 
-export async function getStaticProps(context) {
-  // It's important to default the slug so that it doesn't return "undefined"
-  const page = await client.fetch(`
-    *[_type == "pages" && slug.current == $slug][0]
-  `, { slug:"home" })
-  
-  return {
-    props: {
-      page: page || null,
-    },
-  }
+```
+
+With app dir in Next js 13, you can use async and await to fetch data in Server Components. 
+
+I create a function call `getPageBySlugs` inside `lib/api` dir will retrive slug parameter as string and return page data.
+
+```tsx:lib/api/
+import client from '../client'
+
+export async function getPageBySlugs(slug:string) {
+    const  result  = await client.fetch(`*[_type == "pages" && slug.current == $slug][0]`,{ slug:slug })
+    return result
 }
 ```
 
-You can notice the query syntax inside `getStaticProps` it is a query language GROQ from Sanity, you can read more about it on [Query Language (GROQ)](https://www.sanity.io/docs/groq).
+You can notice the query syntax inside `getPageBySlugs`, it is a query language GROQ from Sanity, you can read more about it on [Query Language (GROQ)](https://www.sanity.io/docs/groq).
 
-and inside components you can see how we pass in props to `<PageBuilder />` component:
+finally, inside page template you can see how we pass in props to `<PageBuilder />` component:
 
 ```ts
 ...
