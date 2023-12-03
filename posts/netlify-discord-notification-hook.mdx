@@ -1,0 +1,91 @@
+---
+title: Integrating Netlify Deployment Notifications with Discord using Webhooks
+excerpt: Discord is a great way to get Netlify notifications! I set up my own private server to collect notifications with my open source projects.
+date: "2023-11-19"
+tags:
+  - netlify
+  - nextjs
+  - blog
+  - discord
+  - webhook
+  - tutorial
+featuredPost: false
+---
+
+Netlify have some solution to trigger  notification when deploy success status finish. I choose use webhook to integrate notification hook between Discord and my app on Netlify.
+
+## Solution: Utilizing Webhooks
+
+Netlify offers various solutions to trigger notifications upon deployments. I opted to use webhooks for integrating a notification system between Discord and my Netlify-hosted application.
+
+## Step 1: Acquiring the Discord Webhook URL
+
+To begin, navigate to your Discord dashboard, access "Settings," then "Integrations," and select "Create Webhook URL." Copy this URL for later use.
+
+![Discord Webhook](/images/post/discord-webhook.png)
+
+## Step 2: Setting Up an API Route in Next.js
+
+My project is hosted on Netlify and uses Next.js. To set up notifications, I added an API route in my Next.js app. This API acts like a bridge: when Netlify finishes building my app, it triggers this API. Then, the API sends a message to a Discord channel. I linked this Next.js API to Netlify's deployment process so it gets called automatically after every build, whether it's a success or a failure.
+
+Here's how to create a Next.js API route within the `pages/api` directory, named `deployment.tsx` :
+
+```tsx:/pages/api/deployment.tsx
+
+export default async function handler(
+    req: NextApiRequest,
+    res: NextApiResponse<ResponseData>
+) {
+    const body = {
+        username: "Username hook",
+        avatar_url: "Your_Avatar_Url",
+        content: null,
+        embeds: [
+            {
+                "title": req?.query?.success ? "Successful deploy of.." : "Deploy did not complete for...",
+                "color": req?.query?.success ? 7143256 : 16731726,
+                "author": {
+                  "name": "Your app naming",
+                  "url": "Your app URL",
+                  "icon_url": "Your app icon URL"
+                }
+              }
+        ],
+        attachments: [],
+    };
+    await fetch(
+        "YOUR_DISCORD_WEBHOOK",
+        {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify(body),
+        }
+    );
+
+    res.status(200).json({message: "Nextjs Discord endpoint"});
+}
+
+```
+
+In this code, I've implemented logic to check incoming requests. If the request includes a success query parameter, the response body is customized with a message and color indicating success.
+
+## Step 3: Configuring the Deployment Hook on Netlify
+
+To set this up, go to your site's configuration on Netlify, navigate to "Notifications," and add a new notification.
+
+![Add notify hook](/images/post/netlify-notify-hook-1.jpg)
+
+
+## Creating the Notification Hook:
+
+For the event listener, I set it to "Deploy successes," meaning Netlify will call the Next.js endpoint when the app deployment is successful. The query string success=true in the endpoint will trigger the customized response body defined in the Next.js API.
+
+![Add notify hook](/images/post/netlify-notify-hook-2.png)
+
+Similarly, I configured another notification hook for deployment failures. In this case, Netlify calls the endpoint when the build fails, so there's no need for an additional query string.
+
+## Conclusion:
+With these steps completed, new notifications should now appear in your designated Discord channel, providing real-time updates on the deployment status of your Netlify application.
+
