@@ -8,7 +8,9 @@ function Blog() {
       <Headings.H2>
         Personal documentary: 100% authentic, good for inspiration.
       </Headings.H2>
-      {allPosts.map((post) => {
+      {allPosts
+        .sort((post1, post2) => new Date(post2.date).getTime() - new Date(post1.date).getTime())
+        .map((post) => {
         return (
           <article key={post.title} className="mt-8 md:mt-10">
             <Link href={post.url}>
