@@ -1,0 +1,13 @@
+# *
+User-agent: *
+Disallow: /404
+
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://trilm95.com
+
+# Sitemaps
+Sitemap: https://trilm95.com/sitemap.xml
